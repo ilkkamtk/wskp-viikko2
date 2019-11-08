@@ -1,19 +1,14 @@
 'use strict';
 const catModel = require('../models/catModel');
 
-const cats = catModel.cats;
-
-const cat_list_get = (req, res) => {
-  res.json(cats);
+const cat_list_get = async (req, res) => {
+  const cats = await catModel.getAllCats();
+  await res.json(cats);
 };
 
-const cat_get = (req, res) => {
-  const cat = cats.filter((kissa) => {
-    if (kissa.id === req.params.id) {
-      return kissa;
-    }
-  });
-  res.json(cat[0]);
+const cat_get = async (req, res) => {
+  const cat = await catModel.getCat(req.params.id);
+  await res.json(cat[0]);
 };
 
 module.exports = {

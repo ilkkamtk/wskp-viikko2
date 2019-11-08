@@ -7,10 +7,7 @@ router.get('/', userController.user_list_get);
 
 router.get('/:id', userController.user_get);
 
-router.post('/', (req, res) => {
-  console.log('user post body', req.body);
-  res.send('With this endpoint you can add users.');
-});
+router.post('/', userController.user_create_post);
 
 router.put('/', (req, res) => {
   res.send('With this endpoint you can edit users.');
