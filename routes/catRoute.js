@@ -1,7 +1,7 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const {body} = require('express-validator');
+const {body, sanitizeBody} = require('express-validator');
 const multer = require('multer');
 const upload = multer({dest: 'uploads/'});
 const catController = require('../controllers/catController');
@@ -31,6 +31,7 @@ router.post(
       body('age', 'must be number').isNumeric().isLength({min: 1}),
       body('weight', 'must be number').isNumeric().isLength({min: 1}),
       body('owner', 'must be number').isNumeric().isLength({min: 1}),
+      sanitizeBody('name').escape(),
     ],
     catController.cat_create_post,
 );
@@ -41,6 +42,7 @@ router.put(
       body('age', 'must be number').isNumeric().isLength({min: 1}),
       body('weight', 'must be number').isNumeric().isLength({min: 1}),
       body('owner', 'must be number').isNumeric().isLength({min: 1}),
+      sanitizeBody('name').escape(),
     ],
     catController.cat_update_put,
 );
