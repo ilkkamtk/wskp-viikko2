@@ -15,38 +15,38 @@
     <div class="forms">
         <div class="form-wrapper">
             <h3>Add user</h3>
-            <form action="http://localhost:3000/user" method="post" class="light-border" id="addUserForm">
-                <input class="light-border" type="text" name="name" placeholder="Name" required>
+            <form novalidate action="http://localhost:3000/user" method="post" class="light-border" id="addUserForm">
+                <input class="light-border" type="text" name="name" pattern=".{3,}" placeholder="Name" required>
                 <input class="light-border" type="email" name="email" placeholder="email" required>
-                <input class="light-border" type="password" name="passwd" placeholder="Password" required>
+                <input class="light-border" type="password" name="passwd" pattern="(?=.*[A-Z]).{8,}" placeholder="Password" required>
                 <button class="light-border" type="submit">Save</button>
             </form>
         </div>
 
         <div class="form-wrapper">
             <h3>Add cat</h3>
-            <form action="http://localhost:3000/cat"
+            <form novalidate action="http://localhost:3000/cat"
                   method="post"
                   class="light-border"
                   enctype="multipart/form-data"
                   id="addCatForm">
                 <input class="light-border" type="text" name="name" placeholder="Name" required>
-                <input class="light-border" type="text" name="age" placeholder="Age" required>
-                <input class="light-border" type="text" name="weight" placeholder="Weight" required>
+                <input class="light-border" type="number" name="age" placeholder="Age" required>
+                <input class="light-border" type="number" step="0.1" name="weight" placeholder="Weight" required>
                 <select class="light-border add-owner" name="owner" required>
                     <option value="">Select owner</option>
                 </select>
-                <input class="light-border" type="file" name="cat" placeholder="Choose file">
+                <input class="light-border" type="file" name="cat" accept="image/*" placeholder="Choose file">
                 <button class="light-border" type="submit">Upload</button>
             </form>
         </div>
 
         <div class="form-wrapper">
             <h3>Modify cat</h3>
-            <form action="http://localhost:3000/cat" id="modCatForm" class="light-border">
+            <form novalidate action="http://localhost:3000/cat" id="modCatForm" class="light-border">
                 <input class="light-border" type="text" name="name" placeholder="Name" required>
-                <input class="light-border" type="text" name="age" placeholder="Age" required>
-                <input class="light-border" type="text" name="weight" placeholder="Weight" required>
+                <input class="light-border" type="number" name="age" placeholder="Age" required>
+                <input class="light-border" type="number" step="0.1" name="weight" placeholder="Weight" required>
                 <select class="light-border add-owner" name="owner" required>
                     <option value="">Select owner</option>
                 </select>

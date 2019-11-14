@@ -1,4 +1,5 @@
 'use strict';
+const {validationResult} = require('express-validator');
 const catModel = require('../models/catModel');
 
 const cat_list_get = async (req, res) => {
@@ -12,28 +13,39 @@ const cat_get = async (req, res) => {
 };
 
 const cat_create_post = async (req, res) => {
-  const params = [
-    req.body.name,
-    req.body.age,
-    req.body.weight,
-    req.body.owner,
-    req.file.filename]; // or req.body.filename if filename saved to body
-  console.log('create', params);
-  const user = await catModel.addCat(params);
-  await res.json(user);
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    res.send(errors.array());
+  } else {
+    const params = [
+      req.body.name,
+      req.body.age,
+      req.body.weight,
+      req.body.owner,
+      req.file.filename]; // or req.body.filename if filename saved to body
+    console.log('create', params);
+    const user = await catModel.addCat(params);
+    await res.json(user);
+  }
 };
 
 const cat_update_put = async (req, res) => {
-  console.log('body', req.body);
-  const params = [
-    req.body.name,
-    req.body.age,
-    req.body.weight,
-    req.body.owner,
-    req.body.id];
-  console.log('update', params);
-  const user = await catModel.updateCat(params);
-  await res.json(user);
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    res.send(errors.array());
+  } else {
+    const params = [
+      req.body.name,
+      req.body.age,
+      req.body.weight,
+      req.body.owner,
+      req.body.id];
+    console.log('update', params);
+    const user = await catModel.updateCat(params);
+    await res.json(user);
+  }
 };
 
 const cat_delete = async (req, res) => {
