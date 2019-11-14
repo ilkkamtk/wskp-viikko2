@@ -12,18 +12,14 @@ router.get('/:id', catController.cat_get);
 router.post('/',  upload.single('cat'), (req, res, next) => {
   console.log('cat post file', req.file);
   // tiedostonnimi bodyyn, jos haluaa
-  req.body.filename = req.file.filename;
+  // req.body.filename = req.file.filename; // if you want to save filename to body
   next();
 });
 
 router.post('/', catController.cat_create_post);
 
-router.put('/', (req, res) => {
-  res.send('With this endpoint you can edit cats.');
-});
+router.put('/', catController.cat_update_put);
 
-router.delete('/', (req, res) => {
-  res.send('With this endpoint you can delete cats.');
-});
+router.delete('/:id', catController.cat_delete);
 
 module.exports = router;
