@@ -49,6 +49,7 @@ const user_create_post = async (req, res, next) => {
       req.body.username,
       hash,
     ];
+
     if (await userModel.addUser(params)) {
       next();
     } else {
