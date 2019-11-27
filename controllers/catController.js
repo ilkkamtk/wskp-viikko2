@@ -1,6 +1,8 @@
 'use strict';
 const {validationResult} = require('express-validator');
 const catModel = require('../models/catModel');
+const resize = require('../utils/resize');
+const imageMeta = require('../utils/imageMeta');
 
 const cat_list_get = async (req, res) => {
   const cats = await catModel.getAllCats();
@@ -18,15 +20,28 @@ const cat_create_post = async (req, res) => {
   if (!errors.isEmpty()) {
     res.send(errors.array());
   } else {
-    const params = [
-      req.body.name,
-      req.body.age,
-      req.body.weight,
-      req.body.owner,
-      req.file.filename]; // or req.body.filename if filename saved to body
-    console.log('create', params);
-    const user = await catModel.addCat(params);
-    await res.json(user);
+    try {
+      // make thumbnail
+      resize.makeThumbnail(req.file.path, req.file.filename);
+      // get coordinates
+      const coords = await imageMeta.getCoordinates(req.file.path);
+      console.log('coords', coords);
+      // add to db
+      const params = [
+        req.body.name,
+        req.body.age,
+        req.body.weight,
+        req.body.owner,
+        req.file.filename,
+        coords,
+      ];
+      const cat = await catModel.addCat(params);
+      await res.json({message: 'upload ok'});
+    }
+    catch (e) {
+      console.log('exif error', e);
+      res.status(400).json({message: 'error'});
+    }
   }
 };
 
