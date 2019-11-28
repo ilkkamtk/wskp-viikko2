@@ -1,6 +1,7 @@
 'use strict';
 const {validationResult} = require('express-validator');
 const catModel = require('../models/catModel');
+const resize = require('../utils/resize');
 
 const cat_list_get = async (req, res) => {
   const cats = await catModel.getAllCats();
@@ -18,6 +19,12 @@ const cat_create_post = async (req, res) => {
   if (!errors.isEmpty()) {
     res.send(errors.array());
   } else {
+    // create thumbnail
+    const thumb = await resize.makeThumbnail(req.file.path,
+        'thumbnails/' + req.file.filename,
+        {width: 160, height: 160});
+    console.log('thumb', thumb);
+
     const params = [
       req.body.name,
       req.body.age,
