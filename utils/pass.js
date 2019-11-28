@@ -9,12 +9,15 @@ const userModel = require('../models/userModel');
 // local strategy for username password login
 passport.use(new Strategy(
     async (username, password, done) => {
-      const params = [username, password];
+      const params = [username];
       try {
         const [user] = await userModel.getUserLogin(params);
         console.log('Local strategy', user); // result is binary row
         if (user === undefined) {
-          return done(null, false, {message: 'Incorrect email or password.'});
+          return done(null, false, {message: 'Incorrect email.'});
+        }
+        if (user.password !== password){
+          return done(null, false, {message: 'Incorrect password.'});
         }
         return done(null, {...user}, {message: 'Logged In Successfully'}); // use spread syntax to create shallow copy to get rid of binary row type
       } catch (err) {
