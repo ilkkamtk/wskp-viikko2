@@ -10,8 +10,18 @@ const getCoordinates = (imgFile) => { // imgFile = full path to uploaded image
           console.log('Error: ' + error.message);
           reject(error);
         } else {
-          // coordinates below should be an array [longitude, latitude]
-          resolve(exifData); // Do something with your data!
+          const coordinates = [];
+          if (Object.keys(exifData.gps).length > 0) {
+            // coordinates below should be an array [longitude, latitude]
+            coordinates[0] = gpsToDecimal(exifData.gps.GPSLongitude,
+                exifData.gps.GPSLongitudeRef);
+            coordinates[1] = gpsToDecimal(exifData.gps.GPSLatitude,
+                exifData.gps.GPSLatitudeRef);
+          } else {
+            coordinates[0] = 0;
+            coordinates[1] = 0;
+          }
+          resolve(coordinates); // Do something with your data!
         }
       });
     } catch (error) {

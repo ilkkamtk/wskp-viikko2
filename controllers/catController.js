@@ -6,6 +6,7 @@ const imageMeta = require('../utils/imageMeta');
 
 const cat_list_get = async (req, res) => {
   const cats = await catModel.getAllCats();
+  await res.json(cats);
 };
 
 const cat_get = async (req, res) => {
@@ -39,9 +40,8 @@ const cat_create_post = async (req, res) => {
         coords,
       ]; // or req.body.filename if filename saved to body
       console.log('create', params);
-      // const user = await catModel.addCat(params);
-      // await res.json({message: 'upload ok'});
-      res.json(coords);
+      const cat = await catModel.addCat(params);
+      await res.json({message: 'upload ok'});
     } catch (e) {
       console.log('exif error', e);
       res.status(400).json({message: e.message});
